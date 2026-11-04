@@ -6,8 +6,8 @@ x-logging: &default-logging
     compress: ${LOG_COMPRESS:-true}
 
 services:
-  aionui-app:
-    container_name: aionui-app
+  aionui:
+    container_name: aionui
     image: ${IMAGE:-localhost/aionui:v2.2.2}
     restart: unless-stopped
     logging: *default-logging

@@ -61,7 +61,7 @@ On a **fresh database** the first admin login credentials are printed to the
 container logs — retrieve them with:
 
 ```bash
-docker logs aionui-app
+docker logs aionui
 ```
 
 ## 🧩 Product Parts
@@ -71,7 +71,7 @@ The product's functional base per [`DEPLOYMENT.md`](../DEPLOYMENT.md)
 
 | part | service | purpose |
 |------|---------|---------|
-| aionui-app | `aionui-app` | WebUI server (web-host + renderer bundle, admin auth over SQLite, port 25808) hosting the `aioncore` v0.2.2 subprocess (Rust ACP agent host, agent-CLI spawning, `/health`) as an in-container process; SQLite state lives in the `aionui-data` volume at `/data`. Without it there is no deployment — it is the single product part. |
+| aionui | `aionui` | WebUI server (web-host + renderer bundle, admin auth over SQLite, port 25808) hosting the `aioncore` v0.2.2 subprocess (Rust ACP agent host, agent-CLI spawning, `/health`) as an in-container process; SQLite state lives in the `aionui-data` volume at `/data`. Without it there is no deployment — it is the single product part. |
 
 Notes:
 
@@ -103,7 +103,7 @@ implementation, one at a time, each gated by a stack-test stage.
 ## 📁 Project Structure
 
 - [`components/`](components/) — Source compose components
-  - [`base/`](components/base/) — Base aionui-app configuration
+  - [`base/`](components/base/) — Base aionui configuration
   - [`environments/`](components/environments/) — Environment-specific configurations
 - [`images/aionui/`](images/aionui/) — Source-built image recipe (§19)
 - [`build/`](build/) — Generated configurations (auto-generated, ready to deploy)
@@ -176,7 +176,7 @@ These variables are declared only in the environment overlays — never in base:
 
 **Runtime Issues:**
 
-- Container unhealthy: check `docker logs aionui-app` for the WebUI ready and
+- Container unhealthy: check `docker logs aionui` for the WebUI ready and
   `AIONCORE_READY` markers; `/health` must return 200.
 - Agent run fails: verify the Gemini credentials (`GEMINI_API_KEY` /
   `GOOGLE_API_KEY` or UI settings) and that the CLI is on PATH in the image.

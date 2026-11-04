@@ -11,7 +11,7 @@ tag v2.2.2). Living document per stack-conventions §20; produced by stack-analy
 | aioncore backend | Rust ACP agent host: SQLite store (`--data-dir`), agent-CLI spawning, `/health` readiness, system info | external release binary, pinned `aioncoreVersion` v0.2.2 from `iOfficeAI/AionCore` GitHub releases — downloaded during image build (upstream `scripts/prepareAioncore.js` idiom) and spawned by the WebUI server, NOT a separate container |
 | Electron desktop app (`packages/desktop`) | native desktop wrapper of the same UI | NOT a container part — excluded from dockerization (upstream's headless story for it is .deb + Xvfb, unsuitable here); the web/server mode is the deployment |
 
-Single-part product: one compose service, `<stack>-app` (§3 naming).
+Single-part product: one compose service, `<stack>` (§3 naming).
 
 ## Interaction map
 
@@ -35,7 +35,7 @@ What breaks when a part is absent: no aioncore binary → startup fails with
 
 Tier groups (core outward):
 
-1. **core** — `aionui-app`: WebUI server + aioncore subprocess + SQLite in a named
+1. **core** — `aionui`: WebUI server + aioncore subprocess + SQLite in a named
    volume + officecli/ICU. Core value ("command-line AI agent chat UI") is fully
    served by this one service. Justification: upstream's own pure-Bun webui path
    and its source Dockerfile treat this as the complete server deployment; no
@@ -63,7 +63,7 @@ Environment surface (all `${VAR:-default}` in Phase 1 compose): `IMAGE`,
 
 ## Base stage plan
 
-- **Stage A (core gate)** — deploy `aionui-app` alone; run the functional gate:
+- **Stage A (core gate)** — deploy `aionui` alone; run the functional gate:
   1. container up; container log shows WebUI ready and aioncore ready
      (`AIONCORE_READY` / `/health` ok) on its runtime port;
   2. browser opens `http://localhost:${PORT}` → renderer loads;

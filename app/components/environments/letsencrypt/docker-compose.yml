@@ -1,5 +1,5 @@
 services:
-  aionui-app:
+  aionui:
     environment:
       DOMAIN: ${DOMAIN}
       VIRTUAL_PORT: ${VIRTUAL_PORT}
