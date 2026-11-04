@@ -10,12 +10,21 @@ ARG AIONUI_REPO=https://github.com/iOfficeAI/AionUi.git
 ARG AIONUI_COMMIT=119dd2b47
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends git ca-certificates curl \
+    && apt-get install -y --no-install-recommends git ca-certificates curl python3 make g++ \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 RUN git clone --filter=blob:none "${AIONUI_REPO}" . \
     && git checkout "${AIONUI_COMMIT}"
+
+# Resource caps: 5 GB host / no swap — serialize node-gyp (better-sqlite3)
+# and cap V8 heap + esbuild/rollup/libuv parallelism so the build stays
+# well under available RAM (~2.9 GB free).
+ENV MAX_JOBS=1 \
+    JOBS=1 \
+    GOMAXPROCS=1 \
+    UV_THREADPOOL_SIZE=2 \
+    NODE_OPTIONS=--max-old-space-size=1024
 
 # Renderer + main bundles into out/ (electron-vite build). postinstall
 # (electron-builder install-app-deps) failures are non-fatal upstream.
