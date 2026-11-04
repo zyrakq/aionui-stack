@@ -1,0 +1,4 @@
+services:
+  aionui-app:
+    ports:
+      - "${AIONUI_PORT:-25808}:25808"
