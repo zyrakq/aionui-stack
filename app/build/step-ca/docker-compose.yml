@@ -1,0 +1,47 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: ${LOG_MAX_SIZE:-10m}
+    max-file: ${LOG_MAX_FILE:-3}
+    compress: ${LOG_COMPRESS:-true}
+services:
+  aionui:
+    container_name: aionui
+    image: ${IMAGE:-localhost/aionui:v2.2.2}
+    restart: unless-stopped
+    logging: *default-logging
+    environment:
+      # Expose to LAN inside the container network so the published port works
+      # (static server binds 127.0.0.1 when remote is not allowed).
+      AIONUI_ALLOW_REMOTE: ${AIONUI_ALLOW_REMOTE:-1}
+      AIONUI_LOG_DIR: ${AIONUI_LOG_DIR:-/data/logs}
+      # agent-cli-gemini credentials (required-for-gate); also settable in UI.
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
+      TZ: ${TZ:-UTC}
+      DOMAIN: ${DOMAIN}
+      VIRTUAL_PORT: ${VIRTUAL_PORT}
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+    volumes:
+      - aionui-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:25808/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    networks:
+      - aionui-network
+      - step-ca-network
+networks:
+  aionui-network:
+    name: aionui-network
+    driver: bridge
+  step-ca-network:
+    name: step-ca-network
+    external: true
+volumes:
+  aionui-data:
+    name: aionui-data
