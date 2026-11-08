@@ -19,7 +19,7 @@ for component docs, quick start, and environment variables.
 ```bash
 cd app/
 sb build
-cd build/forwarding/base/   # or the environment/extension combo you need
+cd build/forwarding/            # or the environment combo you need
 cp .env.example .env        # edit values
 docker compose up -d
 ```

@@ -33,13 +33,13 @@ This will create all combinations in the `build/` directory based on
 
 ```bash
 # For development with port forwarding
-cd build/forwarding/base/
+cd build/forwarding/
 
 # For production with Let's Encrypt SSL
-cd build/letsencrypt/base/
+cd build/letsencrypt/
 
 # For production with Step CA SSL
-cd build/step-ca/base/
+cd build/step-ca/
 ```
 
 ### 4. Configure Environment
@@ -129,7 +129,6 @@ implementation, one at a time, each gated by a stack-test stage.
 - `LOG_MAX_SIZE`: json-file log max size (default: `10m`)
 - `LOG_MAX_FILE`: json-file log file count (default: `3`)
 - `LOG_COMPRESS`: compress rotated logs (default: `true`)
-- `AIONUI_PORT`: host-side published port used by the forwarding overlay; the container always listens on 25808 (default: `25808`)
 - `AIONUI_ALLOW_REMOTE`: bind the WebUI server to `0.0.0.0` so the published port works (default: `1`)
 - `AIONUI_LOG_DIR`: log directory inside the container (default: `/data/logs`)
 - `TZ`: container timezone (default: `UTC`)
@@ -141,6 +140,7 @@ implementation, one at a time, each gated by a stack-test stage.
 These variables are declared only in the environment overlays — never in base:
 
 - `DOMAIN`: public domain of the deployment
+- `AIONUI_PORT`: host-side published port used by the forwarding overlay; the container always listens on 25808 (default: `25808`)
 - `VIRTUAL_HOST`: domain for nginx-proxy
 - `VIRTUAL_PORT`: container port nginx-proxy forwards to (default: `25808`)
 - `LETSENCRYPT_HOST`: domain for the SSL certificate (letsencrypt overlay)

@@ -12,11 +12,8 @@ services:
     restart: unless-stopped
     logging: *default-logging
     environment:
-      # Expose to LAN inside the container network so the published port works
-      # (static server binds 127.0.0.1 when remote is not allowed).
       AIONUI_ALLOW_REMOTE: ${AIONUI_ALLOW_REMOTE:-1}
       AIONUI_LOG_DIR: ${AIONUI_LOG_DIR:-/data/logs}
-      # agent-cli-gemini credentials (required-for-gate); also settable in UI.
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
       TZ: ${TZ:-UTC}
